@@ -20,9 +20,11 @@ env/
 # ---- ML / experiment artifacts ----
 *.pth
 *.pt
+*.bin
 *.h5
 *.ckpt
 *.onnx
+submission.csv
 wandb/
 runs/
 logs/
