@@ -1,6 +1,6 @@
 # Cassava Leaf Disease Classification
 
-An image-classification pipeline for the [Cassava Leaf Disease Classification](https://www.kaggle.com/c/cassava-leaf-disease-classification) Kaggle competition. Given a photo of a cassava leaf, the model predicts one of **5 classes** (4 diseases + healthy). This matters because cassava is a key food-security crop in Africa, and most farmers diagnose disease by eye — a fast, phone-based classifier can help catch infections early.
+An image-classification pipeline for the [Cassava Leaf Disease Classification](https://www.kaggle.com/c/cassava-leaf-disease-classification) Kaggle competition. Given a photo of a cassava leaf, the model predicts one of **5 classes** (4 diseases + healthy). This matters because cassava is a key food-security crop in Africa, and most farmers diagnose disease by eye, this is a fast, phone-based classifier can help catch infections early.
 
 ## Classes
 
