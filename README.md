@@ -41,6 +41,20 @@ The full pipeline lives in [`cassava_leaf_disease_classification.ipynb`](cassava
 | precision | fp16 |
 | metric | accuracy |
 
+## Results
+
+Best **validation accuracy: 0.845** (90/10 stratified hold-out split), trained on GPU with mixed precision.
+
+| epoch | train loss | valid loss | valid accuracy |
+|------:|-----------:|-----------:|---------------:|
+| 1 | 0.771 | 1.193 | 0.695 |
+| 2 | 0.637 | 0.712 | 0.763 |
+| 3 | 0.513 | 0.464 | 0.835 |
+| 4 | 0.476 | 0.459 | 0.839 |
+| 5 | 0.453 | 0.442 | **0.845** |
+
+Accuracy was still improving at epoch 5, so training longer or using a stronger backbone (see below) should push it higher.
+
 ## Repository layout
 
 ```
