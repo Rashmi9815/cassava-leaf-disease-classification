@@ -16,15 +16,15 @@ The training set is **imbalanced** — class 3 (CMD) dominates — which is wort
 
 ## Approach
 
-The full pipeline lives in [`cassava_leaf_disease_classification.ipynb`](cassava_leaf_disease_classification.ipynb) and is built on [**tez**](https://github.com/abhishekkrthakur/tez), a lightweight PyTorch training wrapper.
+The full pipeline lives in [`cassava_leaf_disease_classification.ipynb`](cassava_leaf_disease_classification.ipynb) and is written in **plain PyTorch** — data loading, model, training loop, and inference, with no external training framework.
 
 **Pipeline**
 
-1. **Split** — a 90/10 holdout split of `train.csv` (`train_test_split`, `random_state=42`) for validation.
-2. **Datasets** — `tez.datasets.ImageDataset` loads images from disk and applies [albumentations](https://albumentations.ai/) transforms.
+1. **Split** — a stratified 90/10 holdout split of `train.csv` (`train_test_split`, `random_state=42`) for validation.
+2. **Datasets** — a custom `torch.utils.data.Dataset` reads images with OpenCV and applies [albumentations](https://albumentations.ai/) transforms.
 3. **Augmentation** (train): `RandomResizedCrop(256, 256)`, `Transpose`, `HorizontalFlip`, `VerticalFlip`, `ShiftScaleRotate`, then ImageNet `Normalize`. Validation/test use `CenterCrop` + `Resize(256)` + `Normalize`.
 4. **Model** — `torchvision` **ResNet18** (ImageNet-pretrained) with the final FC layer replaced by `Linear(512, 5)` for transfer learning.
-5. **Train** — `CrossEntropyLoss`, Adam (`lr=1e-3`), `StepLR` scheduler, mixed-precision (`fp16=True`), `EarlyStopping` on `valid_accuracy` (patience 2). Best weights saved to `model.bin`.
+5. **Train** — `CrossEntropyLoss`, Adam (`lr=1e-3`), `StepLR` scheduler, automatic mixed precision (`torch.cuda.amp`), and early stopping on validation accuracy (patience 2). Best weights saved to `model.bin`.
 6. **Predict** — run the trained model over `test_images/`, take `argmax`, and write `submission.csv` in the Kaggle format (`image_id,label`).
 
 **Training configuration**
@@ -64,10 +64,10 @@ unzip cassava-leaf-disease-classification.zip
 
 The notebook was developed in **Google Colab** with a GPU runtime (`device="cuda"`). To run it:
 
-1. Open the notebook in Colab (or locally with Jupyter + a CUDA GPU).
+1. Open the notebook in Colab/Kaggle (or locally with Jupyter + a CUDA GPU). It also runs on CPU, just slower.
 2. Install dependencies:
    ```bash
-   pip install tez albumentations torch torchvision pandas scikit-learn matplotlib
+   pip install torch torchvision albumentations opencv-python-headless pandas scikit-learn tqdm matplotlib
    ```
 3. Make the data available at the paths used in the notebook (`train_images/`, `test_images/`, `train.csv`, `sample_submission.csv`).
 4. Run all cells — training writes `model.bin`, inference writes `submission.csv`.

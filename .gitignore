@@ -34,3 +34,6 @@ checkpoints/
 # ---- Kaggle creds ----
 kaggle.json
 .kaggle/
+
+# ---- Data archives ----
+*.zip
